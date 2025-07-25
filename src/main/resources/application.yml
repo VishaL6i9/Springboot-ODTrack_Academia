@@ -7,8 +7,8 @@ spring:
   
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:odtrack_academia}
-    username: ${DB_USERNAME:odtrack_user}
-    password: ${DB_PASSWORD:odtrack_password}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:6190}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: ${HIKARI_MAXIMUM_POOL_SIZE:20}
@@ -64,9 +64,9 @@ management:
   endpoint:
     health:
       show-details: when-authorized
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: true
 
 logging:
@@ -113,7 +113,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
 
 logging:
   level:
