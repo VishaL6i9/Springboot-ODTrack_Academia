@@ -108,8 +108,8 @@ od_requests(
 ## Development Milestones
 
 - **M1 (Week 1)** - DB schema & Docker compose scaffold ✅
-- **M2 (Week 3)** - Auth endpoints + JWT issuer
-- **M3 (Week 5)** - Timetable CRUD & CSV importer
+- **M2 (Week 3)** - Auth endpoints + JWT issuer ✅
+- **M3 (Week 5)** - Timetable CRUD & CSV importer ✅
 - **M4 (Week 7)** - OD flow + PDF signing service
 - **M5 (Week 9)** - Load test & security scan
 - **M6 (Week 10)** - Tag v1.0, hand-over to DevOps
