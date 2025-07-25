@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: odtrack-postgres
+    environment:
+      POSTGRES_DB: odtrack_academia
+      POSTGRES_USER: odtrack_user
+      POSTGRES_PASSWORD: odtrack_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - odtrack-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: odtrack-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - odtrack-network
+
+  app:
+    image: odtrack-academia-backend:latest
+    container_name: odtrack-backend
+    depends_on:
+      - postgres
+      - minio
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/odtrack_academia
+      SPRING_DATASOURCE_USERNAME: odtrack_user
+      SPRING_DATASOURCE_PASSWORD: odtrack_password
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin123
+    ports:
+      - "8080:8080"
+    networks:
+      - odtrack-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: odtrack-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - odtrack-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: odtrack-grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin123
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./docker/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./docker/grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - odtrack-network
+
+volumes:
+  postgres_data:
+  minio_data:
+  grafana_data:
+
+networks:
+  odtrack-network:
+    driver: bridge
