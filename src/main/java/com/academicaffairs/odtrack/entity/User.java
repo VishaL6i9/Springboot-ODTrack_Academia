@@ -53,6 +53,7 @@ public class User {
     private String phone;
     
     @Column(nullable = false)
+    @Builder.Default
     private Boolean active = true;
     
     @CreatedDate

@@ -43,6 +43,7 @@ public class ODRequest {
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private ODStatus status = ODStatus.PENDING;
     
     @ManyToOne(fetch = FetchType.LAZY)
