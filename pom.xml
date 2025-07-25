@@ -72,12 +72,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
         </dependency>
         
         <!-- JWT -->
@@ -91,14 +85,12 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-impl</artifactId>
             <version>${jjwt.version}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-jackson</artifactId>
             <version>${jjwt.version}</version>
-            <scope>runtime</scope>
         </dependency>
         
         <!-- MinIO S3 Client -->
@@ -267,21 +259,6 @@
                             <SPRING_PROFILES_ACTIVE>docker</SPRING_PROFILES_ACTIVE>
                         </environment>
                     </container>
-                </configuration>
-            </plugin>
-            
-            <!-- Flyway for database migrations -->
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <version>10.4.1</version>
-                <configuration>
-                    <url>jdbc:postgresql://localhost:5432/odtrack_academia</url>
-                    <user>odtrack_user</user>
-                    <password>odtrack_password</password>
-                    <locations>
-                        <location>classpath:db/migration</location>
-                    </locations>
                 </configuration>
             </plugin>
             
